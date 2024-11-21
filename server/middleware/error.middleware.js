@@ -1,4 +1,5 @@
 import { NODE_ENV } from "../constant.js";
+import ApiError from "../utils/ApiError.js";
 
 const DevError = (error, res) => {
     res.status(error.statusCode).json({
@@ -11,7 +12,7 @@ const DevError = (error, res) => {
 
 const ProdError = (error, res) => {
     if (error.isOperational) {
-        res.status(error.stausCode).json({
+        res.status(error.statusCode).json({
             staus: error.statusCode,
             message: error.message,
         });
@@ -21,16 +22,19 @@ const ProdError = (error, res) => {
             message: error.message,
         });
     }
-}
+};
 
 
-export default (error, req, res, next) => {
+export default (error, _, res, __) => {
     error.status = error.status || "error";
     error.statusCode = error.statusCode || 500;
 
     if (NODE_ENV === "development") {
         DevError(error, res);
     } else if (NODE_ENV === "production") {
+        if(error.name === "CastError"){
+            error = new ApiError(400, `Invalid product id ${error.value}`);
+        }
         ProdError(error, res);
     } else {
         return null;
