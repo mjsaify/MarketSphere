@@ -12,11 +12,11 @@ export const GetAllProducts = asyncHandler(async (req, res, next) => {
     const products = await filter.queryFunc;
 
     if (!products || products.length < 1) {
-        const error = new ApiError(404, "Oops.. Could Not Found Products");
+        const error = new ApiError(404, "Oops.. Could Not Find Products");
         return next(error);
     };
 
-    return res.status(200).json(new ApiResponse(200, { totalProducts, products }));
+    return res.status(200).json(new ApiResponse(200, { totalProducts, length: products.length, products }));
 });
 
 export const GetProductDetails = asyncHandler(async (req, res, next) => {

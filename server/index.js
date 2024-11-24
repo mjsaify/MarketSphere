@@ -15,6 +15,7 @@ import { PORT } from "./constant.js";
         // unhandled promise rejections
         process.on("unhandledRejection", (err) =>{
             console.log("Unhandle Rejection Occured! Shutting down...");
+            // console.log(err);
             console.log(err.message);
             server.close(()=>{
                 process.exit(1);
