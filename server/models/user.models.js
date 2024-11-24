@@ -38,7 +38,7 @@ const UserSchema = new mongoose.Schema(
             type: String,
             default: "user"
         },
-        refreshPasswordToken: String,
+        resetPasswordToken: String,
         resetPasswordExpiry: Date
     },
     {
@@ -64,6 +64,14 @@ UserSchema.methods.generateToken = function () {
         email: this.email,
     };
     return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRY })
+};
+
+// password reset token
+UserSchema.methods.generateResetPasswordToken = function (){
+    const token = crypto.randomBytes(64).toString("hex");
+    this.resetPasswordToken = crypto.createHash("sha256").update(token).digest("hex");
+    this.resetPasswordExpiry = Date.now() * 10 * 60; // 15 minutes
+    return token;
 };
 
 const UserModel = mongoose.model("User", UserSchema);
