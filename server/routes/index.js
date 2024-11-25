@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ProductRouter from './product.routes.js';
+import AdminRouter from './admin.routes.js';
 import UserRouter from '../routes/user.routes.js';
 import { ForgotPasswordRequest, ResetPassword, UserLogin, UserSignup } from "../controllers/user.controller.js";
 import { auth, authorization } from "../middleware/auth.js";
@@ -7,8 +7,8 @@ import { GetAllProducts, GetProductDetails } from "../controllers/product.contro
 
 const router = Router();
 
-// PROTECTED
-router.use('/products', auth, authorization("admin"), ProductRouter);
+// PROTECTED ROUTES
+router.use('/admin', auth, authorization("admin"), AdminRouter);
 router.use('/user', auth, UserRouter);
 
 // NON-PROTECTED ROUTES

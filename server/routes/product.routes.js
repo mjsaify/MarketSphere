@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { CreateProduct, DeleteProduct, UpdateProductDetails } from "../controllers/product.controller.js";
+import { CreateProduct, DeleteProduct, GetAllProducts, UpdateProductDetails } from "../controllers/product.controller.js";
 
 const router = Router();
 
-router.route("/")
+router.get("/all_products", GetAllProducts);
+router.route("/create-product")
     .post(CreateProduct);
 
 router.route("/:id")

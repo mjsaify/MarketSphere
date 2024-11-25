@@ -13,7 +13,7 @@ export const auth = asyncHandler(async (req, _, next) => {
     };
 
     const decodedToken = jwt.verify(token, JWT_SECRET);
-    const user = await UserModel.findById(decodedToken.id).select("-password");
+    const user = await UserModel.findById(decodedToken.id);
     if (!user) {
         const error = new ApiError(401, "Unauthorized access. User not found");
         return next(error);
@@ -22,6 +22,7 @@ export const auth = asyncHandler(async (req, _, next) => {
     req.user = {
         id: decodedToken.id,
         email: user.email,
+        role: user.role,
     };
     next();
 });

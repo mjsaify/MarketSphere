@@ -155,7 +155,7 @@ export const ResetPassword = asyncHandler(async (req, res, next) => {
             $gt: Date.now(),
         },
     });
-    console.log(user)
+
     if (!user) {
         return next(new ApiError(400, "Invalid or link has been expired"));
     };
@@ -167,3 +167,48 @@ export const ResetPassword = asyncHandler(async (req, res, next) => {
 
     return res.status(200).json(new ApiResponse(200, "Password Reset Successfull"));
 });
+
+
+export const GetUserDetails = asyncHandler(async (req, res, next) => {
+    const user = await UserModel.findById(req.user.id);
+    if (!user) {
+        return next(new ApiError(404, "Something went wrong! User not found"));
+    };
+    return res.status(200).json(new ApiResponse(200, { user }));
+});
+
+
+export const UpdateUserPassword = asyncHandler(async (req, res, next) => {
+    const { oldPassword, newPassword, confirmPassword } = req.body;
+    if ([oldPassword, newPassword, confirmPassword].some((field) => field.trim() === "")) {
+        return next(new ApiError(400, "All Fieldsa are Required"));
+    };
+
+    if (newPassword !== confirmPassword) {
+        return next(new ApiError(400, "New Password and Confirm Password does not match"));
+    };
+
+    const parsedInputs = UserSignupZodSchema.pick({ password: true }).safeParse({ password: confirmPassword });
+
+    if (!parsedInputs.success) {
+        return next(new ApiError(400, "Password should match policy"));
+    };
+
+    const user = await UserModel.findById(req.user.id).select("+password");
+    if (!user) {
+        return next(new ApiError(404, "Something went wrong! User not found"));
+    };
+
+    // verify old password
+    const isPasswordCorrect = await user.verifyPassword(oldPassword);
+    if (!isPasswordCorrect) {
+        return next(new ApiError(400, "Old Password is Incorrect"));
+    };
+
+    user.password = parsedInputs.data.password;
+    await user.save();
+
+    return res.status(200).json(new ApiResponse(200, {}, "Password Updated Successfully"));
+});
+
+export const UpdateUserProfile = asyncHandler(async (req, res, next) =>{});
