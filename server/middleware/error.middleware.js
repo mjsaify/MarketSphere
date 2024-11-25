@@ -32,11 +32,14 @@ export default (error, _, res, __) => {
     if (NODE_ENV === "development") {
         DevError(error, res);
     } else if (NODE_ENV === "production") {
-        if(error.name === "CastError"){
+        if (error.name === "CastError") {
             error = new ApiError(400, `Invalid product id ${error.value}`);
         };
-        if(error.name === "JsonWebTokenError"){
+        if (error.name === "JsonWebTokenError") {
             error = new ApiError(400, "Invalid Request");
+        };
+        if (error.name === "TokenExpiredError") {
+            error = new ApiError(401, "Session Expired");
         };
         ProdError(error, res);
     } else {

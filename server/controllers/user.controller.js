@@ -71,7 +71,7 @@ export const UserLogin = asyncHandler(async (req, res, next) => {
         return next(error);
     };
 
-    const isPasswordCorrect = user.verifyPassword(parsedInputs.data.password);
+    const isPasswordCorrect = await user.verifyPassword(parsedInputs.data.password);
     if (!isPasswordCorrect) {
         const error = new ApiError(400, "Invalid Credentials");
         return next(error);
@@ -99,11 +99,11 @@ export const LogoutUser = asyncHandler(async (req, res, next) => {
 export const ForgotPasswordRequest = asyncHandler(async (req, res, next) => {
     const { email } = req.body;
     const schema = z.string().email();
-    const checkEmail = schema.safeParse(email);
+    const parsedInputs = schema.safeParse(email);
     if (!email) next(new ApiError(400, "Email is required"));
-    if (!checkEmail.success) next(new ApiError(400, "Invalid Email"));
+    if (!parsedInputs.success) next(new ApiError(400, "Invalid Email"));
 
-    const user = await UserModel.findOne({ email: checkEmail.data });
+    const user = await UserModel.findOne({ email: parsedInputs.data });
     if (!user) next(new ApiError(404, "User Not Found"));
 
     const resetPasswordToken = user.generateResetPasswordToken();
@@ -155,15 +155,15 @@ export const ResetPassword = asyncHandler(async (req, res, next) => {
             $gt: Date.now(),
         },
     });
-
+    console.log(user)
     if (!user) {
         return next(new ApiError(400, "Invalid or link has been expired"));
     };
 
-    user.password = confirmPassword;
+    user.password = parsedInputs.data.password;
     user.resetPasswordToken = undefined;
     user.resetPasswordExpiry = undefined;
     await user.save();
 
-    return next(new ApiResponse(200, {}, "Password Reset Successfull"));
+    return res.status(200).json(new ApiResponse(200, "Password Reset Successfull"));
 });

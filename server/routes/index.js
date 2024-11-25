@@ -14,8 +14,8 @@ router.use('/user', auth, UserRouter);
 // NON-PROTECTED ROUTES
 router.post('/auth/signup', UserSignup);
 router.post('/auth/login', UserLogin);
-router.post('/user/forgot-password', ForgotPasswordRequest); // sends email
-router.put('/user/forgot-password', ResetPassword);
+router.post('/auth/forgot-password', ForgotPasswordRequest); // sends email
+router.put('/auth/forgot-password', ResetPassword);
 
 router.get("/products", GetAllProducts);
 router.get("/products/:id", GetProductDetails);
