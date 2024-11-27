@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import crypto from 'crypto';
-import { UserLoginZodSchema, UserSignupZodSchema } from '../utils/_types.js';
+import { ProductReivewZodShcema, UserLoginZodSchema, UserSignupZodSchema } from '../utils/_types.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import ApiResponse from '../utils/ApiResponse.js';
 import ApiError from '../utils/ApiError.js';
@@ -8,6 +8,7 @@ import { ExtractZodError } from '../utils/ExtractZodError.js';
 import UserModel from '../models/user.models.js';
 import { CookieOptions } from '../constant.js';
 import { SendEmail } from '../utils/SendEmail.js';
+import ProductModel from '../models/product.model.js';
 
 
 export const UserSignup = asyncHandler(async (req, res, next) => {
@@ -211,4 +212,66 @@ export const UpdateUserPassword = asyncHandler(async (req, res, next) => {
     return res.status(200).json(new ApiResponse(200, {}, "Password Updated Successfully"));
 });
 
-export const UpdateUserProfile = asyncHandler(async (req, res, next) =>{});
+
+export const UpdateUserProfile = asyncHandler(async (req, res, next) => {
+
+});
+
+
+export const AddProductReview = asyncHandler(async (req, res, next) => {
+    const { name, ratings, comments } = req.body;
+
+    if ([name, ratings.toString(), comments].some((field) => field.trim() === "")) {
+        return next(new ApiError(400, "All fields are required"));
+    };
+
+    const userReivew = {
+        userId: req.user.id,
+        name,
+        ratings,
+        comments
+    };
+
+    const parsedInputs = ProductReivewZodShcema.safeParse(userReivew);
+
+    if (!parsedInputs.success) {
+        return next(new ApiError(400, parsedInputs.error.errors[0].message || "Invalid Fields"));
+    };
+
+    const products = await ProductModel.findById(req.params.id);
+
+    // check if user already review the product then update the review instead of creating new review
+    const isReviewed = products.reviews.find(review => review.userId.toString() === req.user.id);
+
+    if (isReviewed) {
+        // update existing review
+        products.reviews.forEach((review) => {
+            if (review.userId.toString() === req.user.id) {
+                review.ratings = parsedInputs.data.ratings;
+                review.comments = parsedInputs.data.comments;
+            };
+        });
+    } else {
+        // add new review
+        products.reviews.push(userReivew);
+        products.numberOfReviews = products.reviews.length;
+    };
+
+    // find average ratings
+    let avgRating = 0;
+
+    products.reviews.forEach(review => {
+        avgRating += review.ratings;
+    });
+
+    products.ratings = avgRating / products.reviews.length;
+    await products.save({ validateBeforeSave: false });
+
+    return res.status(200).json(new ApiResponse(200, "Your Review is Added"));
+});
+
+
+export const GetProductReviews = asyncHandler (async (req, res, next) =>{
+    const product = await ProductModel.find();
+
+});

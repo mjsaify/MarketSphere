@@ -33,7 +33,7 @@ export default (error, _, res, __) => {
         DevError(error, res);
     } else if (NODE_ENV === "production") {
         if (error.name === "CastError") {
-            error = new ApiError(400, `Invalid product id ${error.value}`);
+            error = new ApiError(400, `Invalid id ${error.value}`);
         };
         if (error.name === "JsonWebTokenError") {
             error = new ApiError(400, "Invalid Request");

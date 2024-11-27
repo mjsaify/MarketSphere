@@ -12,11 +12,6 @@ export const ProductZodSchema = z.object({
         public_id: z.string(),
         url: z.string().url(),
     }),
-    reviews: z.object({
-        name: z.string(),
-        ratings: z.number(),
-        comment: z.string()
-    }).optional(),
     createdAt: z.string().datetime().optional()
 });
 
@@ -88,4 +83,20 @@ export const UserSignupZodSchema = z.object({
 export const UserLoginZodSchema = z.object({
     email: z.string().email({ message: "Email is Invalid" }),
     password: z.string()
+});
+
+export const ProductReivewZodShcema = z.object({
+    userId: z.string(),
+    name: z.string(),
+    ratings: z.number()
+        .superRefine((val, ctx) => {
+            if (val > 5 || val < 0) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: "Ratings can only be between 0 and 5"
+                });
+                return z.NEVER;
+            };
+        }),
+    comments: z.string().max(100, { message: "Can't type more than 100 words" }),
 });

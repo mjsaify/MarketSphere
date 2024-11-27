@@ -37,7 +37,7 @@ export const UpdateUserRole = asyncHandler(async (req, res, next) => {
         return next(new ApiError(404, "User Not Found"));
     };
 
-    return res.status(200).json(new ApiResponse(200, `${user.name} is now admin`));
+    return res.status(200).json(new ApiResponse(200, `${user.name} is now ${user.role}`));
 });
 
 
