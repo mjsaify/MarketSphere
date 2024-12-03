@@ -3,12 +3,13 @@ import { GetUserDetails, LogoutUser, UpdateUserPassword, UpdateUserProfile, AddP
 
 const router = Router();
 
+// profile
 router.get("/profile", GetUserDetails);
 router.put("/profile/update-password", UpdateUserPassword);
 router.put("/profile/update", UpdateUserProfile);
 router.post("/logout", LogoutUser);
 
-// product action user routes
+// product
 router.route("/products/:id/add_review")
     .post(AddProductReview)
 

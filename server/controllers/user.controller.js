@@ -240,8 +240,12 @@ export const AddProductReview = asyncHandler(async (req, res, next) => {
 
     const products = await ProductModel.findById(req.params.id);
 
+    if(!products){
+        return next(new ApiError(404, "Invalid id Product not found"));
+    };
+
     // check if user already review the product then update the review instead of creating new review
-    const isReviewed = products.reviews.find(review => review.userId.toString() === req.user.id);
+    const isReviewed = products.reviews.find(review => review.userId.toString() === userReivew.userId);
 
     if (isReviewed) {
         // update existing review
