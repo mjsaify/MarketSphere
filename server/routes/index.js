@@ -1,7 +1,7 @@
 import { Router } from "express";
 import AdminRouter from './admin.routes.js';
 import UserRouter from '../routes/user.routes.js';
-import { ForgotPasswordRequest, ResetPassword, UserLogin, UserSignup } from "../controllers/user.controller.js";
+import { ForgotPasswordRequest, GetProductReviews, ResetPassword, UserLogin, UserSignup } from "../controllers/user.controller.js";
 import { auth, authorization } from "../middleware/auth.js";
 import { GetAllProducts, GetProductDetails } from "../controllers/product.controller.js";
 
@@ -19,5 +19,6 @@ router.put('/auth/forgot-password', ResetPassword);
 
 router.get("/products", GetAllProducts);
 router.get("/products/:id", GetProductDetails);
+router.get("/product/reviews", GetProductReviews);
 
 export default router;

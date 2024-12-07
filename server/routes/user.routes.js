@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { GetUserDetails, LogoutUser, UpdateUserPassword, UpdateUserProfile, AddProductReview } from "../controllers/user.controller.js";
+import { GetUserDetails, LogoutUser, UpdateUserPassword, UpdateUserProfile, AddProductReview, DeleteProductReview } from "../controllers/user.controller.js";
 
 const router = Router();
 
@@ -11,7 +11,9 @@ router.post("/logout", LogoutUser);
 
 // product
 router.route("/products/:id/add_review")
-    .post(AddProductReview)
+    .post(AddProductReview);
 
+router.route("/product/reviews")
+    .delete(DeleteProductReview);
 
 export default router;

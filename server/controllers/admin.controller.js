@@ -2,6 +2,7 @@ import ApiResponse from "../utils/ApiResponse.js";
 import ApiError from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import UserModel from "../models/user.models.js";
+import ProductModel from "../models/product.model.js";
 
 export const GetAllUsers = asyncHandler(async (req, res, next) => {
     const users = await UserModel.find();

@@ -240,7 +240,7 @@ export const AddProductReview = asyncHandler(async (req, res, next) => {
 
     const products = await ProductModel.findById(req.params.id);
 
-    if(!products){
+    if (!products) {
         return next(new ApiError(404, "Invalid id Product not found"));
     };
 
@@ -275,7 +275,54 @@ export const AddProductReview = asyncHandler(async (req, res, next) => {
 });
 
 
-export const GetProductReviews = asyncHandler (async (req, res, next) =>{
-    const product = await ProductModel.find();
+export const GetProductReviews = asyncHandler(async (req, res, next) => {
+    const product = await ProductModel.findById(req.query.id);
 
+    if (!product) {
+        return next(new ApiError(404, "Product Not Found"));
+    };
+
+    return res.status(200).json(new ApiResponse(200, { reviews: product.reviews }));
+});
+
+
+export const DeleteProductReview = asyncHandler(async (req, res, next) => {
+    const product = await ProductModel.findById(req.query.id);
+
+    if (!product) {
+        return next(new ApiError(404, "Product Not Found"));
+    };
+
+
+    const reviews = product.reviews.filter(review => review._id.toString() !== req.query.reviewId);
+
+    let avg = 0;
+    let ratings;
+
+    reviews.forEach((rev) => {
+        avg += rev.ratings;
+    });
+
+    if (reviews.ratings < 1) {
+        ratings = 0;
+    } else {
+        ratings = avg / reviews.length;
+    };
+
+    const numberOfReviews = reviews.length;
+
+    await ProductModel.findByIdAndUpdate(
+        req.query.id,
+        {
+            reviews,
+            ratings,
+            numberOfReviews,
+            runValidators: true,
+        },
+        {
+            new: true,
+        }
+    );
+
+    return res.status(200).json(new ApiResponse(200, "Review Deleted"));
 });
