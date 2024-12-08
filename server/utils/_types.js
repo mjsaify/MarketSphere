@@ -100,3 +100,31 @@ export const ProductReivewZodShcema = z.object({
         }),
     comments: z.string().max(100, { message: "Can't type more than 100 words" }),
 });
+
+
+export const OrderZodSchema = z.object({
+    user: z.string(),
+    shippingAddress: z.object({
+        address: z.string(),
+        city: z.string(),
+        state: z.string(),
+        postalCode: z.number().nonnegative(),
+        country: z.string(),
+        phoneNumber: z.number()
+            .superRefine((val, ctx) => {
+                if (!/^(?:\+91[\s-]?)?[6-9]\d{9}$/.test(val)) {
+                    ctx.addIssue({
+                        code: z.ZodIssueCode.custom,
+                        message: "Invalid Mobile Number"
+                    });
+                    return z.NEVER;
+                };
+            }),
+        orderItems: z.object({
+            name: z.string(),
+            quantity: z.number(),
+            price: z.string(),
+            image: z.string(),
+        }).array()
+    })
+});
