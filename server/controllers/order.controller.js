@@ -6,7 +6,7 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 
 
 export const CreateNewOrder = asyncHandler(async (req, res, next) => {
-    const userId = req.user.id;
+    const id = req.user.id;
     const { shippingAddress, orderItems, paymentInfo, paidAt, pricingDetails, orderStatus, deliveredAt } = req.body;
 
     // if ([shippingAddress, orderItems, paymentInfo, paidAt, pricingDetails, orderStatus, deliveredAt].some((field) => field.trim() === "")) {
@@ -14,7 +14,7 @@ export const CreateNewOrder = asyncHandler(async (req, res, next) => {
     // };
 
     await OrderModel.create({
-        userId,
+        user: id,
         shippingAddress,
         orderItems,
         paymentInfo,
@@ -25,4 +25,26 @@ export const CreateNewOrder = asyncHandler(async (req, res, next) => {
     });
 
     return res.status(201).json(new ApiResponse(201, "Order Placed Successfully"));
+});
+
+
+export const GetPlacedOrders = asyncHandler(async (req, res, next) => {
+    const orders = await OrderModel.find({ user: req.user.id });
+
+    if (!orders) {
+        return next(new ApiError(404, "Order Not Found"));
+    };
+
+    return res.status(200).json(new ApiResponse(200, { orders }));
+});
+
+
+export const GetOrderDetails = asyncHandler(async (req, res, next) => {
+    const order = await OrderModel.findById(req.params.id).populate("user", "name email");
+
+    if (!order) {
+        return next(new ApiError(404, "Order Not Found"));
+    };
+
+    return res.status(200).json(new ApiResponse(200, { order }));
 });

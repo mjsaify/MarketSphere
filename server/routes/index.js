@@ -11,7 +11,7 @@ const router = Router();
 // PROTECTED ROUTES
 router.use('/admin', auth, authorization("admin"), AdminRouter);
 router.use('/user', auth, UserRouter);
-router.use('/order', auth, OrderRouter);
+router.use('/orders', auth, OrderRouter);
 
 // NON-PROTECTED ROUTES
 router.post('/auth/signup', UserSignup);
