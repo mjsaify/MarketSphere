@@ -1,6 +1,11 @@
 /* eslint-disable react/prop-types */
 
-const Hero = ({ children }) => {
+import FAQ from "./FAQ"
+import Products from "./Products"
+import NewsLetter from "./NewsLetter"
+import OfferAndDeals from "./OfferAndDeals"
+
+const Hero = () => {
     return (
         <div className="font-[sans-serif] max-w-6xl max-md:max-w-md mx-auto mt-12">
             <div className="grid md:grid-cols-2 items-center md:gap-10 gap-6">
@@ -39,10 +44,11 @@ const Hero = ({ children }) => {
                     />
                 </div>
             </div>
-            {/* <div className="mt-10">
-                <Incentives />
-            </div> */}
-            {children}
+            <Products title="Featured Products" />
+            <OfferAndDeals />
+            <Products title="Best Selling" />
+            <NewsLetter />
+            <FAQ />
         </div>
 
     )
