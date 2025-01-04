@@ -6,6 +6,29 @@ import ApiFeatures from '../utils/ApiFeatures.js';
 import { ProductZodSchema } from '../utils/_types.js';
 
 
+export const GetProductsHome = asyncHandler(async (req, res, next) => {
+    const products = await ProductModel.aggregate([{
+        $facet: {
+            featuredProducts: [
+                { $match: { isFeatured: true } },
+                { $limit: 8 }
+            ],
+            bestSellingProducts: [
+                { $match: { bestSelling: true } },
+                { $limit: 8 }
+            ]
+        }
+    }]);
+
+    const { featuredProducts, bestSellingProducts } = products[0];
+
+    if (!products || products.length < 1) {
+        return next(new ApiError(404, "Oops.. Could Not Find Products"));
+    };
+
+    return res.status(200).json(new ApiResponse(200, { featuredProducts, bestSellingProducts }));
+});
+
 export const GetAllProducts = asyncHandler(async (req, res, next) => {
     const totalProducts = await ProductModel.countDocuments();
     const filter = new ApiFeatures(totalProducts, ProductModel.find(), req.query).partialTextSearch().filter().sort().pagination();
@@ -29,7 +52,6 @@ export const GetProductDetails = asyncHandler(async (req, res, next) => {
     };
 
     return res.status(201).json(new ApiResponse(200, { product }));
-
 });
 
 export const CreateProduct = asyncHandler(async (req, res, next) => {
@@ -59,7 +81,6 @@ export const UpdateProductDetails = asyncHandler(async (req, res, next) => {
         return next(error);
     };
 
-
     return res.status(201).json(new ApiResponse(200, { product }, "Product Details Updated"));
 });
 
@@ -71,7 +92,6 @@ export const DeleteProduct = asyncHandler(async (req, res, next) => {
         const error = new ApiError(404, "Product Not Found");
         return next(error);
     };
-
 
     return res.status(201).json(new ApiResponse(200, {}, `Product with id ${id} deleted`));
 });

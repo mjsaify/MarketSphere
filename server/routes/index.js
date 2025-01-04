@@ -4,7 +4,7 @@ import UserRouter from '../routes/user.routes.js';
 import OrderRouter from './order.routes.js';
 import { ForgotPasswordRequest, GetProductReviews, ResetPassword, UserLogin, UserSignup } from "../controllers/user.controller.js";
 import { auth, authorization } from "../middleware/auth.js";
-import { GetAllProducts, GetProductDetails } from "../controllers/product.controller.js";
+import { GetAllProducts, GetProductDetails, GetProductsHome } from "../controllers/product.controller.js";
 
 const router = Router();
 
@@ -20,6 +20,7 @@ router.post('/auth/forgot-password', ForgotPasswordRequest); // sends email
 router.put('/auth/forgot-password', ResetPassword);
 
 router.get("/products", GetAllProducts);
+router.get("/products/home", GetProductsHome);
 router.get("/products/:id", GetProductDetails);
 router.get("/product/reviews", GetProductReviews);
 

@@ -33,6 +33,18 @@ const ProductSchema = new mongoose.Schema(
             type: Number,
             default: 0,
         },
+        sold: {
+            type: Number,
+            default: 0
+        },
+        isFeatured: {
+            type: Boolean,
+            default: false,
+        },
+        bestSelling: {
+            type: Boolean,
+            default: false,
+        },
         image: [
             {
                 public_id: {
