@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import RootLayout from '../pages/RootLayout';
 import Home from "../pages/Home";
+import ProductDetails from "../pages/ProductDetails";
 
 
 const AppRouter = () => {
@@ -13,6 +14,10 @@ const AppRouter = () => {
                 {
                     index: true,
                     element: <Home />
+                },
+                {
+                    path: "products/:productId",
+                    element: <ProductDetails />
                 }
             ]
         }

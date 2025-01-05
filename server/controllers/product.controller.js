@@ -20,11 +20,11 @@ export const GetProductsHome = asyncHandler(async (req, res, next) => {
         }
     }]);
 
-    const { featuredProducts, bestSellingProducts } = products[0];
-
     if (!products || products.length < 1) {
         return next(new ApiError(404, "Oops.. Could Not Find Products"));
     };
+    
+    const { featuredProducts, bestSellingProducts } = products[0];
 
     return res.status(200).json(new ApiResponse(200, { featuredProducts, bestSellingProducts }));
 });
@@ -51,7 +51,7 @@ export const GetProductDetails = asyncHandler(async (req, res, next) => {
         return next(error);
     };
 
-    return res.status(201).json(new ApiResponse(200, { product }));
+    return res.status(200).json(new ApiResponse(200, { product }));
 });
 
 export const CreateProduct = asyncHandler(async (req, res, next) => {
@@ -81,7 +81,7 @@ export const UpdateProductDetails = asyncHandler(async (req, res, next) => {
         return next(error);
     };
 
-    return res.status(201).json(new ApiResponse(200, { product }, "Product Details Updated"));
+    return res.status(200).json(new ApiResponse(200, { product }, "Product Details Updated"));
 });
 
 export const DeleteProduct = asyncHandler(async (req, res, next) => {
@@ -93,5 +93,5 @@ export const DeleteProduct = asyncHandler(async (req, res, next) => {
         return next(error);
     };
 
-    return res.status(201).json(new ApiResponse(200, {}, `Product with id ${id} deleted`));
+    return res.status(200).json(new ApiResponse(200, {}, `Product with id ${id} deleted`));
 });

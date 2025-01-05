@@ -1,12 +1,13 @@
+import { Link } from "react-router-dom"
 
 const Header = () => {
     return (
-        <header className="flex bg-white border-b py-3 sm:px-6 px-4 font-[sans-serif] min-h-[75px] tracking-wide relative z-50">
+        <header className="flex bg-white border-b py-3 sm:px-10 px-4 font-[sans-serif] min-h-[75px] tracking-wide relative z-50">
             <div className="flex max-w-screen-xl mx-auto w-full">
                 <div className="flex flex-wrap items-center lg:gap-y-2 gap-4 w-full">
-                    <a >
+                    <Link to="/" >
                         <h1 className="text-2xl font-medium text-[#0791C6]">MarketSphere</h1>
-                    </a>
+                    </Link>
                     <div
                         id="collapseMenu"
                         className="lg:ml-6 max-lg:hidden lg:!block max-lg:before:fixed max-lg:before:bg-black max-lg:before:opacity-50 max-lg:before:inset-0 max-lg:before:z-50"
@@ -40,7 +41,7 @@ const Header = () => {
                                             className="w-36"
                                         />
                                     </a>
-                                    <button className="px-4 py-2 text-sm rounded-full text-white border-2 border-[#007bff] bg-[#007bff] hover:bg-[#004bff]">
+                                    <button className="px-4 py-2 text-sm rounded-full text-white border-2 border-primary-blue bg-primary-blue hover:bg-primary-blue-dark">
                                         Sign In
                                     </button>
                                 </div>
@@ -48,7 +49,7 @@ const Header = () => {
                             <li className="max-lg:border-b max-lg:py-3 px-3">
                                 <a
                                     
-                                    className="text-[#007bff] hover:text-[#007bff] text-[15px] block font-semibold"
+                                    className="text-primary-blue hover:text-primary-blue text-[15px] block font-semibold"
                                 >
                                     Products
                                 </a>
@@ -56,7 +57,7 @@ const Header = () => {
                             <li className="max-lg:border-b max-lg:py-3 px-3">
                                 <a
                                     
-                                    className="text-[#333] hover:text-[#007bff] text-[15px] block font-semibold"
+                                    className="text-[#333] hover:text-primary-blue text-[15px] block font-semibold"
                                 >
                                     About
                                 </a>
@@ -64,7 +65,7 @@ const Header = () => {
                             <li className="max-lg:border-b max-lg:py-3 px-3">
                                 <a
                                     
-                                    className="text-[#333] hover:text-[#007bff] text-[15px] block font-semibold"
+                                    className="text-[#333] hover:text-primary-blue text-[15px] block font-semibold"
                                 >
                                     Contacts
                                 </a>
@@ -72,7 +73,7 @@ const Header = () => {
                             <li className="max-lg:border-b max-lg:py-3 px-3">
                                 <a
                                     
-                                    className="text-[#333] hover:text-[#007bff] text-[15px] block font-semibold"
+                                    className="text-[#333] hover:text-primary-blue text-[15px] block font-semibold"
                                 >
                                     Profile
                                 </a>
@@ -116,7 +117,7 @@ const Header = () => {
                                 </div>
                                 <span className="text-[13px] font-semibold text-[#333]">Cart</span>
                             </div>
-                            <button className="max-lg:hidden px-4 py-2 text-sm rounded-full text-white border-2 border-[#007bff] bg-[#007bff] hover:bg-[#004bff]">
+                            <button className="max-lg:hidden px-4 py-2 text-sm rounded-full text-white border-2 border-primary-blue bg-primary-blue hover:bg-primary-blue-dark">
                                 Sign In
                             </button>
                             <button id="toggleOpen" className="lg:hidden">
