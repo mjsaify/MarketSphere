@@ -47,12 +47,12 @@ const Header = () => {
                                 </div>
                             </li>
                             <li className="max-lg:border-b max-lg:py-3 px-3">
-                                <a
+                                <Link to="/products"
                                     
                                     className="text-primary-blue hover:text-primary-blue text-[15px] block font-semibold"
                                 >
                                     Products
-                                </a>
+                                </Link>
                             </li>
                             <li className="max-lg:border-b max-lg:py-3 px-3">
                                 <a
