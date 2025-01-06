@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import RootLayout from '../pages/RootLayout';
 import Home from "../pages/Home";
 import ProductDetails from "../pages/ProductDetails";
-import Products from "../pages/Products";
+import ProductsPage from "../pages/ProductsPage";
 
 
 const AppRouter = () => {
@@ -18,7 +18,7 @@ const AppRouter = () => {
                 },
                 {
                     path: "products",
-                    element: <Products />
+                    element: <ProductsPage />
                 },
                 {
                     path: "products/:productId",

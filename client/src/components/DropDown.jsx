@@ -7,7 +7,7 @@ const DropDown = () => {
                 id="dropdownToggle"
                 className="px-5 py-2.5 border border-gray-300 text-gray-800 text-sm outline-none bg-white hover:bg-gray-50"
             >
-                Dropdown menu
+                Sort
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="w-3 fill-gray-500 inline ml-3"

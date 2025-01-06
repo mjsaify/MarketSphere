@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import ReactStars from "react-rating-stars-component";
 import { Link } from 'react-router-dom';
+import { Button } from "@/components/ui/button";
 
 const Products = (props) => {
     const { _id, name, price, ratings, image } = props;
@@ -27,13 +28,12 @@ const Products = (props) => {
                     <h6 className="text-base text-gray-800 font-bold">&#8377;{price}</h6>
                 </div>
             </Link>
-            <button
-                type="button"
+            <Button
                 className="text-sm px-2 mt-4 h-9 font-semibold w-full bg-blue-600 hover:bg-blue-700 text-white tracking-wide ml-auto outline-none border-none rounded"
                 onClick={() => alert("added to cart")}
             >
                 Add to cart
-            </button>
+            </Button>
         </div>
     );
 };
