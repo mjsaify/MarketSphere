@@ -7,6 +7,12 @@ import Search from "../components/Search";
 
 const ProductsPage = () => {
     const { data, isLoading } = useGetAllProductsQuery();
+    console.log(data)
+
+    const totalPage = 10;
+    const handlePageChange = (page) => {
+        console.log("Page changed", page)
+    }
 
     return (
         <div className="my-12 px-10 max-sm:px-4">
@@ -21,7 +27,7 @@ const ProductsPage = () => {
                     ))
                 }
             </div>
-            <Pagination />
+            <Pagination totalPage={totalPage} onPageChange={handlePageChange} />
         </div>
     );
 };

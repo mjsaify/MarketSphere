@@ -1,47 +1,127 @@
+/* eslint-disable react/prop-types */
+import {
+    Pagination as PaginationWrapper,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination"
+import { useState } from "react";
 
 
-const Pagination = () => {
+const Pagination = ({ totalPage, onPageChange }) => {
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const handlePageChange = (page) => {
+        if (page < 1 || page > totalPage) return;
+        setCurrentPage(page);
+        onPageChange(page); // notify component to fetch next page data
+    };
+
+    const renderPageLinks = () => {
+        const pages = [];
+        const range = 1; // Number of pages to show around the current page
+
+        // Always include the first page
+        pages.push(
+            <PaginationItem key={1}>
+                <PaginationLink
+                    className="cursor-pointer"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        handlePageChange(1);
+                    }}
+                    isActive={currentPage === 1}
+                >
+                    1
+                </PaginationLink>
+            </PaginationItem>
+        );
+
+        // Add dots if there's a gap between the first page and the range
+        if (currentPage - range > 2) {
+            pages.push(
+                <PaginationItem key="dots-before">
+                    <PaginationEllipsis />
+                </PaginationItem>
+            );
+        }
+
+        // Add the dynamic range of pages around the current page
+        for (let i = Math.max(2, currentPage - range); i <= Math.min(totalPage - 1, currentPage + range); i++) {
+            pages.push(
+                <PaginationItem key={i}>
+                    <PaginationLink
+                        href="#"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handlePageChange(i);
+                        }}
+                        isActive={i === currentPage}
+                    >
+                        {i}
+                    </PaginationLink>
+                </PaginationItem>
+            );
+        }
+
+        // Add dots if there's a gap between the range and the last page
+        if (currentPage + range < totalPage - 1) {
+            pages.push(
+                <PaginationItem key="dots-after">
+                    <PaginationEllipsis />
+                </PaginationItem>
+            );
+        }
+
+        // Always include the last page
+        if (totalPage > 1) {
+            pages.push(
+                <PaginationItem key={totalPage}>
+                    <PaginationLink
+                        href="#"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handlePageChange(totalPage);
+                        }}
+                        isActive={currentPage === totalPage}
+                    >
+                        {totalPage}
+                    </PaginationLink>
+                </PaginationItem>
+            );
+        };
+        return pages;
+    };
+
+
     return (
-        <ul className="flex space-x-5 justify-center font-[sans-serif] my-10">
-            <li className="flex items-center justify-center shrink-0 bg-gray-100 w-9 h-9 rounded-md">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-3 fill-gray-400"
-                    viewBox="0 0 55.753 55.753"
-                >
-                    <path
-                        d="M12.745 23.915c.283-.282.59-.52.913-.727L35.266 1.581a5.4 5.4 0 0 1 7.637 7.638L24.294 27.828l18.705 18.706a5.4 5.4 0 0 1-7.636 7.637L13.658 32.464a5.367 5.367 0 0 1-.913-.727 5.367 5.367 0 0 1-1.572-3.911 5.369 5.369 0 0 1 1.572-3.911z"
-                        data-original="#000000"
+        <PaginationWrapper>
+            <PaginationContent>
+                <PaginationItem>
+                    <PaginationPrevious
+                        className="cursor-pointer"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handlePageChange(currentPage - 1);
+                        }}
                     />
-                </svg>
-            </li>
-            <li className="flex items-center justify-center shrink-0 bg-blue-500  border hover:border-blue-500 border-blue-500 cursor-pointer text-base font-bold text-white px-[13px] h-9 rounded-md">
-                1
-            </li>
-            <li className="flex items-center justify-center shrink-0 border hover:border-blue-500 cursor-pointer text-base font-bold text-gray-800 px-[13px] h-9 rounded-md">
-                2
-            </li>
-            <li className="flex items-center justify-center shrink-0 border hover:border-blue-500 cursor-pointer text-base font-bold text-gray-800 px-[13px] h-9 rounded-md">
-                3
-            </li>
-            <li className="flex items-center justify-center shrink-0 border hover:border-blue-500 cursor-pointer text-base font-bold text-gray-800 px-[13px] h-9 rounded-md">
-                4
-            </li>
-            <li className="flex items-center justify-center shrink-0 border hover:border-blue-500 cursor-pointer w-9 h-9 rounded-md">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-3 fill-gray-400 rotate-180"
-                    viewBox="0 0 55.753 55.753"
-                >
-                    <path
-                        d="M12.745 23.915c.283-.282.59-.52.913-.727L35.266 1.581a5.4 5.4 0 0 1 7.637 7.638L24.294 27.828l18.705 18.706a5.4 5.4 0 0 1-7.636 7.637L13.658 32.464a5.367 5.367 0 0 1-.913-.727 5.367 5.367 0 0 1-1.572-3.911 5.369 5.369 0 0 1 1.572-3.911z"
-                        data-original="#000000"
+                </PaginationItem>
+                {renderPageLinks()}
+                <PaginationItem>
+                    <PaginationNext
+                        className="cursor-pointer"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handlePageChange(currentPage + 1);
+                        }}
+
                     />
-                </svg>
-            </li>
-        </ul>
-
-    )
-}
-
+                </PaginationItem>
+            </PaginationContent>
+        </PaginationWrapper>
+    );
+};
 export default Pagination

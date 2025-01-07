@@ -51,10 +51,10 @@ class ApiFeatures {
     pagination() {
         const page = Number(this.queryStr.page) || 1;
         const limit = 10; // 10 products per page
-        const skip = limit * (page - 1);
+        const skip = limit * (page - 1); // how many records to skip
         this.queryFunc = this.queryFunc.skip(skip).limit(limit);
         
-        // handle page exceeding error
+        // page exceeding error
         if(skip >= this.totalProducts){
             throw new ApiError(404, "Page Not Found");
         };
