@@ -41,7 +41,7 @@ const Pagination = ({ totalPage, onPageChange }) => {
         );
 
         // Add dots if there's a gap between the first page and the range
-        if (currentPage - range > 2) {
+        if (currentPage - range > 1) {
             pages.push(
                 <PaginationItem key="dots-before">
                     <PaginationEllipsis />
